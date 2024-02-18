@@ -9,8 +9,10 @@ import android.os.Bundle;
 
 import com.example.wedokart.R;
 import com.example.wedokart.adapters.CatagoryAdapter;
+import com.example.wedokart.adapters.ProductAdapter;
 import com.example.wedokart.databinding.ActivityMainBinding;
 import com.example.wedokart.model.Catagory;
+import com.example.wedokart.model.Product;
 
 import java.util.ArrayList;
 
@@ -20,12 +22,21 @@ public class MainActivity extends AppCompatActivity {
     CatagoryAdapter catagoryAdapter;
     ArrayList<Catagory> catagories;
 
+    ProductAdapter productAdapter;
+    ArrayList<Product> products;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        initCatagories();
+        initProducts();
+
+    }
+
+    void initCatagories(){
         catagories = new ArrayList<>();
 
         catagories.add(new Catagory("Earrings","https://img.freepik.com/free-psd/luxury-diamond-earrings-png-isolated-transparent-background_191095-9809.jpg","#000000","some breif",1));
@@ -41,6 +52,23 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         binding.catagoriesList.setLayoutManager(layoutManager);
         binding.catagoriesList.setAdapter(catagoryAdapter);
+    }
 
+    void initProducts(){
+
+        products=new ArrayList<>();
+        products.add(new Product("Earrings","https://img.freepik.com/free-psd/luxury-diamond-earrings-png-isolated-transparent-background_191095-9809.jpg","", 1200.0, 15.0,10,1));
+        products.add(new Product("Earrings","https://img.freepik.com/free-psd/luxury-diamond-earrings-png-isolated-transparent-background_191095-9809.jpg","", 1200.0, 15.0,10,1));
+        products.add(new Product("Earrings","https://img.freepik.com/free-psd/luxury-diamond-earrings-png-isolated-transparent-background_191095-9809.jpg","", 1200.0, 15.0,10,1));
+        products.add(new Product("Earrings","https://img.freepik.com/free-psd/luxury-diamond-earrings-png-isolated-transparent-background_191095-9809.jpg","", 1200.0, 15.0,10,1));
+        products.add(new Product("Earrings","https://img.freepik.com/free-psd/luxury-diamond-earrings-png-isolated-transparent-background_191095-9809.jpg","", 1200.0, 15.0,10,1));
+        products.add(new Product("Earrings","https://img.freepik.com/free-psd/luxury-diamond-earrings-png-isolated-transparent-background_191095-9809.jpg","", 1200.0, 15.0,10,1));
+        products.add(new Product("Earrings","https://img.freepik.com/free-psd/luxury-diamond-earrings-png-isolated-transparent-background_191095-9809.jpg","", 1200.0, 15.0,10,1));
+        products.add(new Product("Earrings","https://img.freepik.com/free-psd/luxury-diamond-earrings-png-isolated-transparent-background_191095-9809.jpg","", 1200.0, 15.0,10,1));
+        productAdapter = new ProductAdapter(this,products);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
+        binding.productList.setLayoutManager(layoutManager);
+        binding.productList.setAdapter(productAdapter);
     }
 }
