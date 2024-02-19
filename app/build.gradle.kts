@@ -44,4 +44,5 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.makeramen:roundedimageview:2.3.0")
+    implementation ("com.github.mancj:MaterialSearchBar:0.8.5")
 }
