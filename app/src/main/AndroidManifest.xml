@@ -23,7 +23,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.Splash_Screen"
-            android:theme="@style/Theme.Design.Light.NoActionBar"
+            android:theme="@style/Theme.WeDoKart"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
