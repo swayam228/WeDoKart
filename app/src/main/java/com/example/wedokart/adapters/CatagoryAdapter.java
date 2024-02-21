@@ -2,6 +2,7 @@ package com.example.wedokart.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class CatagoryAdapter extends RecyclerView.Adapter<CatagoryAdapter.Catago
     @Override
     public void onBindViewHolder(@NonNull CatagoryViewHolder holder, int position) {
         Catagory catagory = catagories.get(position);
-        holder.binding.lable.setText(catagory.getName());
+        holder.binding.lable.setText(Html.fromHtml(catagory.getName()));
         Glide.with(context)
                 .load(catagory.getIcon())
                 .into(holder.binding.image);

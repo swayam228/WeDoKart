@@ -54,4 +54,7 @@ dependencies {
     implementation ("me.relex:circleindicator:2.1.6")
     implementation ("org.imaginativeworld.whynotimagecarousel:whynotimagecarousel:2.1.0")
 
+    //volley implementation
+    implementation ("com.android.volley:volley:1.2.1")
+
 }
