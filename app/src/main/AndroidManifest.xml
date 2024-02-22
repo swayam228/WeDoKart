@@ -16,15 +16,22 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.CartActivity"
+            android:exported="false"
+            android:label="Shopping Cart"
+            android:theme="@style/Base.Theme.WeDoKart.Actionbar"
+            />
+        <activity
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ProductDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Base.Theme.WeDoKart.Actionbar" />
         <activity
             android:name=".activity.Splash_Screen"
-            android:theme="@style/Theme.WeDoKart"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.WeDoKart">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

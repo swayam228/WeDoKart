@@ -51,10 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initslider() {
-        binding.carousel.addData(new CarouselItem("https://img.freepik.com/free-psd/black-friday-super-sale-web-banner-template_106176-1672.jpg","Watch sale"));
-        binding.carousel.addData(new CarouselItem("https://www.shutterstock.com/image-vector/summer-sale-banner-vector-poster-260nw-1744966235.jpg","Summer sale"));
-        binding.carousel.addData(new CarouselItem("https://img.freepik.com/free-vector/super-sale-flat-design-banner_23-2149137716.jpg?size=626&ext=jpg&ga=GA1.1.1880011253.1699488000&semt=ais","sale sale sale"));
-        binding.carousel.addData(new CarouselItem("https://img.freepik.com/free-psd/black-friday-super-sale-web-banner-template_106176-1672.jpg","Watch sale"));
+        getRecentOffers();
     }
 
     void initCategories(){
@@ -69,61 +66,104 @@ public class MainActivity extends AppCompatActivity {
         binding.catagoriesList.setAdapter(catagoryAdapter);
     }
 
-
     void getCategories() {
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        StringRequest request = new StringRequest(Request.Method.GET, Constants.GET_CATEGORIES_URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+        StringRequest request = new StringRequest(Request.Method.GET, Constants.GET_CATEGORIES_URL, response -> {
 
-                try {
-                    //use for checking data incomming
-                    Log.e("err", response);
+            try {
+                //use for checking data incomming
+                Log.e("err", response);
 
-                    JSONObject mainObj= new JSONObject(response);
-                    if (mainObj.getString("status").equals("success")) {
+                JSONObject mainObj= new JSONObject(response);
+                if (mainObj.getString("status").equals("success")) {
 
-                        JSONArray categoriesArray = mainObj.getJSONArray("categories");
-                        for (int i=0;i<categoriesArray.length();i++){
-                            JSONObject object = categoriesArray.getJSONObject(i);
-                            Catagory catagory= new Catagory(
-                                    object.getString("name"),
-                                    Constants.CATEGORIES_IMAGE_URL + object.getString("icon"),
-                                    object.getString("color"),
-                                    object.getString("brief"),
-                                    object.getInt("id")
-                            );
-                            categories.add(catagory);
-                        }
-                        catagoryAdapter.notifyDataSetChanged();
-                    }  else {
-                        //DO NOTHING
+                    JSONArray categoriesArray = mainObj.getJSONArray("categories");
+                    for (int i=0;i<categoriesArray.length();i++){
+                        JSONObject object = categoriesArray.getJSONObject(i);
+                        Catagory catagory= new Catagory(
+                                object.getString("name"),
+                                Constants.CATEGORIES_IMAGE_URL + object.getString("icon"),
+                                object.getString("color"),
+                                object.getString("brief"),
+                                object.getInt("id")
+                        );
+                        categories.add(catagory);
                     }
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    catagoryAdapter.notifyDataSetChanged();
+                }  else {
+                    //DO NOTHING
                 }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        }, error -> {
 
-            }
         });
         queue.add(request);
     }
 
+    void getRecentProducts() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        String url = Constants.GET_PRODUCTS_URL + "?count=10";
+        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
+            try {
+                JSONObject object = new JSONObject(response);
+                if(object.getString("status").equals("success")){
+                    JSONArray productsArray = object.getJSONArray("products");
+                    for(int i =0; i< productsArray.length(); i++) {
+                        JSONObject childObj = productsArray.getJSONObject(i);
+                        Product product = new Product(
+                                childObj.getString("name"),
+                                Constants.PRODUCTS_IMAGE_URL + childObj.getString("image"),
+                                childObj.getString("status"),
+                                childObj.getDouble("price"),
+                                childObj.getDouble("price_discount"),
+                                childObj.getInt("stock"),
+                                childObj.getInt("id")
+
+                        );
+                        products.add(product);
+                    }
+                    productAdapter.notifyDataSetChanged();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> { });
+
+        queue.add(request);
+    }
+
+    void getRecentOffers() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest request = new StringRequest(Request.Method.GET, Constants.GET_OFFERS_URL, response -> {
+            try {
+                JSONObject object = new JSONObject(response);
+                if(object.getString("status").equals("success")) {
+                    JSONArray offerArray = object.getJSONArray("news_infos");
+                    for(int i =0; i < offerArray.length(); i++) {
+                        JSONObject childObj =  offerArray.getJSONObject(i);
+                        binding.carousel.addData(
+                                new CarouselItem(
+                                        Constants.NEWS_IMAGE_URL + childObj.getString("image"),
+                                        childObj.getString("title")
+                                )
+                        );
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {});
+        queue.add(request);
+    }
     void initProducts(){
 
         products=new ArrayList<>();
-        products.add(new Product("Earrings","https://www.helium10.com/app/uploads/2020/04/vit-c.jpg","", 1200.0, 15.0,10,1));
-        products.add(new Product("Earrings","https://plus.unsplash.com/premium_photo-1675896084254-dcb626387e1e?q=80&w=1870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","", 1200.0, 15.0,10,1));
-        products.add(new Product("Earrings","https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","", 1200.0, 15.0,10,1));
-        products.add(new Product("Earrings","https://plus.unsplash.com/premium_photo-1675896084254-dcb626387e1e?q=80&w=1870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","", 1200.0, 15.0,10,1));
-        products.add(new Product("Earrings","https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","", 1200.0, 15.0,10,1));
-        products.add(new Product("Earrings","https://www.helium10.com/app/uploads/2020/04/vit-c.jpg","", 1200.0, 15.0,10,1));
-        products.add(new Product("Earrings","https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","", 1200.0, 15.0,10,1));
-        products.add(new Product("Earrings","https://plus.unsplash.com/premium_photo-1675896084254-dcb626387e1e?q=80&w=1870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","", 1200.0, 15.0,10,1));
+        getRecentProducts();
         productAdapter = new ProductAdapter(this,products);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this,2);
