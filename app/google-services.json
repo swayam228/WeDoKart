@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "527619604913",
+    "project_id": "wedokart",
+    "storage_bucket": "wedokart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527619604913:android:d0de7c9bb5bf79ea3cbd90",
+        "android_client_info": {
+          "package_name": "com.example.wedokart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZMHB-KJBHRu-rD-1yoiK5p351YjXO1pg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

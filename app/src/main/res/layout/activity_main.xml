@@ -7,13 +7,12 @@
     android:background="@color/MainActivityColor"
     tools:context=".activity.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/search_and_logout_container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/blue"
-        android:orientation="vertical"
         android:padding="10dp"
+        android:background="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,15 +20,29 @@
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/searchBar"
             style="@style/MaterialSearchBarLight"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/logoutButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:mt_placeholder="WeDoKart"
             app:mt_navIconEnabled="true"
             app:mt_roundedSearchBarEnabled="true"
             app:mt_hint="search your product"
             app:mt_maxSuggestionsCount="10"
             app:mt_speechMode="true" />
-    </LinearLayout>
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/logout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/searchBar"
+            app:layout_constraintTop_toTopOf="@id/searchBar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -41,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@id/search_and_logout_container">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,11 +71,10 @@
                     android:id="@+id/carousel"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    app:showNavigationButtons="false"
-                    app:showCaption="false"
                     app:autoPlay="true"
                     app:autoPlayDelay="3000"
-                    />
+                    app:showCaption="false"
+                    app:showNavigationButtons="false" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
