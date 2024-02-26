@@ -59,14 +59,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        button.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+            startActivity(intent);
+            finish();
         });
 
         initCategories();
@@ -98,9 +95,6 @@ public class MainActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.GET, Constants.GET_CATEGORIES_URL, response -> {
 
             try {
-                //use for checking data incomming
-                Log.e("err", response);
-
                 JSONObject mainObj= new JSONObject(response);
                 if (mainObj.getString("status").equals("success")) {
 
