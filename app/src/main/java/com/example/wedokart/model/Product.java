@@ -10,6 +10,7 @@ public class Product implements Item, Serializable {
     private String name, image, status;
     private Double price, discount;
     private int stock, id;
+    private int quantity;
 
     public Product(String name, String image, String status, Double price, Double discount, int stock, int id) {
         this.name = name;
@@ -85,5 +86,13 @@ public class Product implements Item, Serializable {
     @Override
     public String getItemName() {
         return name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

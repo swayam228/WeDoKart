@@ -19,7 +19,10 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.wedokart.R;
 import com.example.wedokart.databinding.ActivityProductDetailBinding;
+import com.example.wedokart.model.Product;
 import com.example.wedokart.utils.Constants;
+import com.hishd.tinycart.model.Cart;
+import com.hishd.tinycart.util.TinyCartHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +30,7 @@ import org.json.JSONObject;
 public class ProductDetailActivity extends AppCompatActivity {
 
     ActivityProductDetailBinding binding;
+    Product currentProduct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +49,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Cart cart = TinyCartHelper.getCart();
         binding.AddToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                cart.addItem(currentProduct,1);
             }
         });
 
@@ -79,6 +84,17 @@ public class ProductDetailActivity extends AppCompatActivity {
                     String description = product.getString("description");
                     binding.ProductDescription.setText(
                             Html.fromHtml(description)
+                    );
+
+                    currentProduct= new Product(
+                            product.getString("name"),
+                            Constants.PRODUCTS_IMAGE_URL + product.getString("image"),
+                            product.getString("status"),
+                            product.getDouble("price"),
+                            product.getDouble("price_discount"),
+                            product.getInt("stock"),
+                            product.getInt("id")
+
                     );
                 }
             } catch (JSONException e) {

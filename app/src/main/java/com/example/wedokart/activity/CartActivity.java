@@ -11,9 +11,11 @@ import com.example.wedokart.adapters.CartAdapter;
 import com.example.wedokart.databinding.ActivityCartBinding;
 import com.example.wedokart.model.Product;
 import com.hishd.tinycart.model.Cart;
+import com.hishd.tinycart.model.Item;
 import com.hishd.tinycart.util.TinyCartHelper;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -31,18 +33,27 @@ public class CartActivity extends AppCompatActivity {
 
         Cart cart = TinyCartHelper.getCart();
 
-        products.add(new Product("Product1", "https://thebrandhopper.com/wp-content/uploads/2021/10/Product-Innovation.jpg", "321", 50.0, 50.0, 12, 1));
-        products.add(new Product("Product1", "https://thebrandhopper.com/wp-content/uploads/2021/10/Product-Innovation.jpg", "321", 50.0, 50.0, 12, 1));
-        products.add(new Product("Product1", "https://thebrandhopper.com/wp-content/uploads/2021/10/Product-Innovation.jpg", "321", 50.0, 5.0, 12, 1));
+        for (Map.Entry<Item, Integer> item : cart.getAllItemsWithQty().entrySet()){
+            Product product = (Product) item.getKey();
+            int quantity =item.getValue();
+            product.setQuantity(quantity);
+            products.add(product);
+        }
 
-
-        adapter = new CartAdapter(this, products);
+        adapter = new CartAdapter(this, products, new CartAdapter.CartListener() {
+            @Override
+            public void onQuantityChanged() {
+                binding.Subtotal.setText(String.format("Rs. %.2f",cart.getTotalPrice()));
+            }
+        });
 
         LinearLayoutManager layoutManager= new LinearLayoutManager(this);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
         binding.cartList.setLayoutManager(layoutManager);
         binding.cartList.addItemDecoration(itemDecoration);
         binding.cartList.setAdapter(adapter);
+
+        binding.Subtotal.setText(String.format("Rs. %.2f",cart.getTotalPrice()));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
