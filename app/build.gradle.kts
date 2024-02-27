@@ -60,4 +60,7 @@ dependencies {
     //volley implementation
     implementation ("com.android.volley:volley:1.2.1")
 
+    //tiny cart library
+    implementation ("com.github.hishd:TinyCart:1.0.1")
+
 }

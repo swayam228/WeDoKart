@@ -10,6 +10,8 @@ import com.example.wedokart.R;
 import com.example.wedokart.adapters.CartAdapter;
 import com.example.wedokart.databinding.ActivityCartBinding;
 import com.example.wedokart.model.Product;
+import com.hishd.tinycart.model.Cart;
+import com.hishd.tinycart.util.TinyCartHelper;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,8 @@ public class CartActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         products = new ArrayList<>();
+
+        Cart cart = TinyCartHelper.getCart();
 
         products.add(new Product("Product1", "https://thebrandhopper.com/wp-content/uploads/2021/10/Product-Innovation.jpg", "321", 50.0, 50.0, 12, 1));
         products.add(new Product("Product1", "https://thebrandhopper.com/wp-content/uploads/2021/10/Product-Innovation.jpg", "321", 50.0, 50.0, 12, 1));
