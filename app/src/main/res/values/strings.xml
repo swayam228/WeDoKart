@@ -7,4 +7,6 @@
     <string name="already_have_an_account">Already have an Account?</string>
     <string name="register_now">Register Now</string>
     <string name="logout">LOGOUT</string>
+    <string name="add_to_cart">ADD TO CART</string>
+    <string name="loading_details">Loading Details......</string>
 </resources>

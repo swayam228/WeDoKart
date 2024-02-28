@@ -19,7 +19,7 @@
             android:name=".activity.CheckoutActivity"
             android:exported="false"
             android:label="Checkout"
-            android:theme="@style/Theme.WeDoKart" />
+            android:theme="@style/Base.Theme.WeDoKart.Actionbar" />
         <activity
             android:name=".activity.RegisterActivity"
             android:exported="false"
