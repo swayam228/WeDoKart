@@ -25,6 +25,7 @@ import com.example.wedokart.model.Catagory;
 import com.example.wedokart.model.Product;
 import com.example.wedokart.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import org.imaginativeworld.whynotimagecarousel.model.CarouselItem;
 import org.json.JSONArray;
@@ -49,6 +50,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                intent.putExtra("query", text.toString());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+
+            }
+        });
 
         auth = FirebaseAuth.getInstance();
         button = findViewById(R.id.logoutButton);

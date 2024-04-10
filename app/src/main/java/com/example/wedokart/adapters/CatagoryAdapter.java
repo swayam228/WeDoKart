@@ -1,6 +1,7 @@
 package com.example.wedokart.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.wedokart.R;
+import com.example.wedokart.activity.CatagoryActivity;
 import com.example.wedokart.databinding.ItemCatagoryBinding;
 import com.example.wedokart.model.Catagory;
 
@@ -42,6 +44,16 @@ public class CatagoryAdapter extends RecyclerView.Adapter<CatagoryAdapter.Catago
                 .into(holder.binding.image);
 
         holder.binding.image.setBackgroundColor(Color.parseColor(catagory.getColor()));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CatagoryActivity.class);
+                intent.putExtra("catId", catagory.getId());
+                intent.putExtra("catagoryName", catagory.getName());
+                context.startActivity(intent);
+            }
+        });
 
     }
 

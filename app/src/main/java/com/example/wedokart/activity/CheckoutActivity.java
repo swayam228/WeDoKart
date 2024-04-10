@@ -4,14 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -32,10 +43,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CheckoutActivity extends AppCompatActivity {
 
+    private static final int TIMEOUT_DURATION = 30000;
     ActivityCheckoutBinding binding;
     CartAdapter adapter;
     ArrayList<Product> products;
@@ -137,18 +150,84 @@ public class CheckoutActivity extends AppCompatActivity {
             Log.e("err", dataObject.toString());
 
         }catch (JSONException e){}
+//        JsonObjectRequest request=new JsonObjectRequest(Request.Method.POST, Constants.POST_ORDER_URL, dataObject, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                try {
+//                    if (response.getString("status").equals("success")){
+//                        Toast.makeText(CheckoutActivity.this,"Success order.", Toast.LENGTH_SHORT).show();
+//
+//                    }else {
+//                        Toast.makeText(CheckoutActivity.this,"Failed order.", Toast.LENGTH_SHORT).show();
+//                    }
+//                    progressDialog.dismiss();
+//                    Log.e("res",response.toString());
+//                } catch (Exception e) {}
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//            }
+//        }) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String,String> headers = new HashMap<>();
+//                headers.put("Security","secure_code");
+//                return headers;
+//            }
+//        };
         JsonObjectRequest request=new JsonObjectRequest(Request.Method.POST, Constants.POST_ORDER_URL, dataObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                try {
+                    if (response.getString("status").equals("success")){
+                        Toast.makeText(CheckoutActivity.this,"Success order.", Toast.LENGTH_SHORT).show();
+                        String orderNumber = response.getJSONObject("data").getString("code");
+                        new AlertDialog.Builder(CheckoutActivity.this)
+                                .setTitle("Order Successfull")
+                                .setMessage("Your order number is: "+ orderNumber)
+                                .setCancelable(false)
+                                .setPositiveButton("Pay Now", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent= new Intent(CheckoutActivity.this,PaymentActivity.class);
+                                        intent.putExtra("orderCode", orderNumber);
+                                        startActivity(intent);
+                                    }
+                                }).show();
+                    } else {
+                        new AlertDialog.Builder(CheckoutActivity.this)
+                                .setTitle("Order Failed")
+                                .setMessage("Something went wrong, please try again")
+                                .setCancelable(false)
+                                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
+                                    }
+                                }).show();
+                        Toast.makeText(CheckoutActivity.this,"Failed order.", Toast.LENGTH_SHORT).show();
+                    }
+                    progressDialog.dismiss();
+                    Log.e("res",response.toString());
+                } catch (Exception e) {
+                }
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-
+            public void onErrorResponse(VolleyError error) {}
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> headers = new HashMap<>();
+                headers.put("Security","secure_code");
+                return headers;
             }
-        });
-
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                TIMEOUT_DURATION,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
     }
 
